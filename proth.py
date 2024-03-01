@@ -1,7 +1,7 @@
 import argparse
 from gmpy2 import mpz, powmod
 from time import time as tm
-from poprogress import simple_progress as sp
+from tqdm import tqdm as sp
 res = ""
 def proth(k, n, max_a=10, vfalse=False, vprinti=False, vnores=True):
     global res
@@ -39,7 +39,6 @@ def main():
     parser.add_argument("--vfalse", action="store_true", help="Verbose output when test fails")
     parser.add_argument("--vprinti", action="store_true", help="Verbose output including initial test information")
     parser.add_argument("--vnores", action="store_true", help="Verbose output when no result is conclusive")
-    
     args = parser.parse_args()
     havep = False
     t = tm()
