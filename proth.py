@@ -1,5 +1,6 @@
 import argparse
 from gmpy2 import mpz, powmod
+from time import time as tm
 def proth(k, n, max_a=10, vfalse=False, vprinti=False, vnores=True):
     verbose = True  # Verbose is always True
     if k > (1 << n):
@@ -37,6 +38,7 @@ def main():
     
     args = parser.parse_args()
     havep = False
+    t = tm()
     for k in range(args.min_k, args.max_k + 1, 2):  # Ensure k is odd
         result = proth(k, args.n, args.max_a, args.vfalse, args.vprinti, args.vnores)
         if result:
@@ -44,5 +46,6 @@ def main():
             #print(f"{k}*2^{args.n}+1 is a prime.")
     if not havep:
         print("there is no prime find.")
+    print("Time: %f seconds"%(tm()-t))
 if __name__ == "__main__":
     main()
