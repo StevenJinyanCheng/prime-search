@@ -1,14 +1,17 @@
 import argparse
 from gmpy2 import mpz, powmod
 from time import time as tm
+from poprogress import simple_progress as sp
+res = ""
 def proth(k, n, max_a=10, vfalse=False, vprinti=False, vnores=True):
+    global res
     verbose = True  # Verbose is always True
     if k > (1 << n):
         if verbose:
-            print(f"k={k} is greater than 2^n={2**n}, skipping.")
+            res += (f"k={k} is greater than 2^n={2**n}, skipping.\n")
         return False
     if verbose and vprinti:
-        print(f"Proth test {k}*2^{n}+1")
+        res += (f"Proth test {k}*2^{n}+1")
     p_12 = mpz(k << (n - 1))
     p_1 = mpz(p_12 << 1)
     p = mpz(p_1 + 1)
@@ -16,17 +19,18 @@ def proth(k, n, max_a=10, vfalse=False, vprinti=False, vnores=True):
         powres = powmod(i, p_12, p)
         if powres == p_1:
             if verbose:
-                print(f"Find {i}^((p-1)/2)=-1 mod p, p ({k}*2^{n}+1) is a prime with {len(str(p))} digits.")
+                res += (f"Find {i}^((p-1)/2)=-1 mod p, p ({k}*2^{n}+1) is a prime with {len(str(p))} digits.\n")
             return True
         if powres != 1:
             if verbose and vfalse:
-                print(f"p ({k}*2^{n}+1) is not a prime because find {i}^((p-1)/2) != 1 and != -1 mod p")
+                res += (f"p ({k}*2^{n}+1) is not a prime because find {i}^((p-1)/2) != 1 and != -1 mod p\n")
             return False
     if verbose and vnores:
-        print(f"Proth test inconclusive for {k}*2^{n}+1")
+        res += (f"Proth test inconclusive for {k}*2^{n}+1\n")
     return False
 
 def main():
+    global res
     parser = argparse.ArgumentParser(description="Proth Prime Test")
     parser.add_argument("--min-k", type=int, default=1, help="Minimum k value (default: 1)")
     parser.add_argument("--max-k", type=int, default=10, help="Maximum k value (default: 10)")
@@ -39,13 +43,14 @@ def main():
     args = parser.parse_args()
     havep = False
     t = tm()
-    for k in range(args.min_k, args.max_k + 1, 2):  # Ensure k is odd
+    for k in sp(range(args.min_k // 2 * 2 + 1, args.max_k + 1, 2)):  # Ensure k is odd
         result = proth(k, args.n, args.max_a, args.vfalse, args.vprinti, args.vnores)
         if result:
             havep = True
             #print(f"{k}*2^{args.n}+1 is a prime.")
     if not havep:
-        print("there is no prime find.")
-    print("Time: %f seconds"%(tm()-t))
+        res += ("there is no prime find.\n")
+    res += ("Time: %f seconds\n"%(tm()-t))
+    print(res)
 if __name__ == "__main__":
     main()
