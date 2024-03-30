@@ -35,7 +35,7 @@ def main():
     parser.add_argument("--min-k", type=int, default=1, help="Minimum k value (default: 1)")
     parser.add_argument("--max-k", type=int, default=10, help="Maximum k value (default: 10)")
     parser.add_argument("n", type=int, help="The n value in k*2^n+1")
-    parser.add_argument("--max_a", type=int, default=10, help="The maximum value of a to test (default: 10)")
+    parser.add_argument("--max-a", type=int, default=10, help="The maximum value of a to test (default: 10)")
     parser.add_argument("--vfalse", action="store_true", help="Verbose output when test fails")
     parser.add_argument("--vprinti", action="store_true", help="Verbose output including initial test information")
     parser.add_argument("--vnores", action="store_true", help="Verbose output when no result is conclusive")
@@ -43,7 +43,11 @@ def main():
     havep = False
     t = tm()
     for k in sp(range(args.min_k // 2 * 2 + 1, args.max_k + 1, 2)):  # Ensure k is odd
-        result = proth(k, args.n, args.max_a, args.vfalse, args.vprinti, args.vnores)
+        try:
+            result = proth(k, args.n, args.max_a, args.vfalse, args.vprinti, args.vnores)
+        except:
+            print(res)
+            return
         if result:
             havep = True
             #print(f"{k}*2^{args.n}+1 is a prime.")
