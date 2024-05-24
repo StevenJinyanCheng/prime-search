@@ -8,4 +8,4 @@ It uses the Proth's theroem to calculate prime.
 </html>
 
 ## Primes found
-The biggest prime found is 2^8304\*22531+1 with 2505 digits.
+The biggest prime found is 2^9301\*2421+1 with 2804 digits.
