@@ -2,6 +2,7 @@ import argparse
 from gmpy2 import mpz, powmod
 from time import time as tm
 from tqdm import tqdm as sp
+print("Proth.py version 1.0")
 res = ""
 def proth(k, n, max_a=10, vfalse=False, vprinti=False, vnores=True):
     global res
