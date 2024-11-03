@@ -22,4 +22,4 @@ python proth.py -h
 
 ## Primes found
 
-The biggest prime found is 6909\*2^13287+1 with 4004 digits.
+The biggest prime found is 555\*2^16609+1 with 5003 digits.

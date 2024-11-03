@@ -2,7 +2,7 @@ import argparse
 from gmpy2 import mpz, powmod
 from time import time as tm
 from tqdm import tqdm as sp
-print("Proth.py version 1.0")
+print("Proth.py version 1.1")
 res = ""
 def proth(k, n, max_a=10, vfalse=False, vprinti=False, vnores=True):
     global res
@@ -40,10 +40,24 @@ def main():
     parser.add_argument("--vfalse", action="store_true", help="Verbose output when test fails")
     parser.add_argument("--vprinti", action="store_true", help="Verbose output including initial test information")
     parser.add_argument("--vnores", action="store_true", help="Verbose output when no result is conclusive")
+    parser.add_argument("--sieve-limit", type=int, default=10, help="Sieve limit")
     args = parser.parse_args()
-    havep = False
     t = tm()
-    for k in sp(range(args.min_k // 2 * 2 + 1, args.max_k + 1, 2)):  # Ensure k is odd
+    print("Step 1: Sieve")
+    l = range(args.min_k // 2 * 2 + 1, args.max_k + 1, 2)
+    l = list(l)
+    k = [1] * (args.max_k + 1)
+    for i in sp(l):
+        for p in range(3, args.sieve_limit, 2):
+            if (mpz(i << args.n) + 1) % p == 0:
+                k[i] = 0
+                break
+    ll = filter(lambda x: k[x], l)
+    ll = list(ll)
+    print(f"Sieve: filter {len(l)} numbers, {len(ll)} numbers left, {len(ll)/len(l)*100:.2f}% of the numbers are left.")
+    havep = False
+    print("Step 2: Test")
+    for k in sp(ll):  # Ensure k is odd
         try:
             result = proth(k, args.n, args.max_a, args.vfalse, args.vprinti, args.vnores)
         except:
